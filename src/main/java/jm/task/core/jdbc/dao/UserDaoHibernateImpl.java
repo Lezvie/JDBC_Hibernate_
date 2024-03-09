@@ -4,6 +4,7 @@ import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.exception.JDBCConnectionException;
 import org.hibernate.query.Query;
 
 
@@ -28,7 +29,7 @@ public class UserDaoHibernateImpl implements UserDao {
                     """).executeUpdate();
             transaction.commit();
 
-        } catch (Exception e) {
+        } catch (JDBCConnectionException e) {
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -46,7 +47,7 @@ public class UserDaoHibernateImpl implements UserDao {
                     """).executeUpdate();
             transaction.commit();
 
-        } catch (Exception e) {
+        } catch (JDBCConnectionException e) {
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -62,7 +63,7 @@ public class UserDaoHibernateImpl implements UserDao {
             session.save(new User(name, lastName, age));
             transaction.commit();
 
-        } catch (Exception e) {
+        } catch (JDBCConnectionException e) {
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -77,7 +78,7 @@ public class UserDaoHibernateImpl implements UserDao {
             transaction = session.beginTransaction();
             session.delete(session.get(User.class, id));
             transaction.commit();
-        } catch (Exception e) {
+        } catch (JDBCConnectionException e) {
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -94,7 +95,7 @@ public class UserDaoHibernateImpl implements UserDao {
             Query query = session.createQuery("SELECT n FROM User n");
             users = query.getResultList();
             transaction.commit();
-        } catch (Exception e) {
+        } catch (JDBCConnectionException e) {
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -110,7 +111,7 @@ public class UserDaoHibernateImpl implements UserDao {
             transaction = session.beginTransaction();
             session.createSQLQuery("TRUNCATE TABLE Users").executeUpdate();
             transaction.commit();
-        } catch (Exception e) {
+        } catch (JDBCConnectionException e) {
             if (transaction != null) {
                 transaction.rollback();
             }
